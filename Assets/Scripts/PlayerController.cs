@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed;
     public Vector3 playerMoveDirection;
     [SerializeField] Animator animator;
+    public float playerHealth;
+    public float playerMaxHealth;
 
     void Awake()
     {
@@ -22,6 +24,12 @@ public class PlayerController : MonoBehaviour
             Instance = this; 
         }
         
+    }
+
+    void Start()
+    {
+        playerHealth = playerMaxHealth;
+        UIController.Instance.UpdateHealthSlider();
     }
 
     // Update is called once per frame
@@ -49,5 +57,15 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = new Vector2(playerMoveDirection.x * moveSpeed, playerMoveDirection.y * moveSpeed);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        playerHealth -= damage;
+        UIController.Instance.UpdateHealthSlider();
+        if (playerHealth <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
