@@ -10,6 +10,12 @@ public class Enemy : MonoBehaviour
    [SerializeField] private GameObject destroyEffect;
    private Vector3 direction;
    [SerializeField] private float moveSpeed;
+   [SerializeField] private float damage;
+   [SerializeField] private float health;
+   [SerializeField] private int experienceToGive;
+   [SerializeField] private float pushTime;
+   private float pushCounter;
+   
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -23,6 +29,20 @@ public class Enemy : MonoBehaviour
                     else
                     {
                         spriteRenderer.flipX=false;
+                    }
+                    //push enemy
+                    if (pushCounter > 0)
+                    {
+                        pushCounter -= Time.deltaTime;
+                        if (moveSpeed > 0)
+                        {
+                            moveSpeed = -moveSpeed;
+                        }
+
+                        if (pushCounter <= 0)
+                        {
+                            moveSpeed = Mathf.Abs(moveSpeed);
+                        }
                     }
                     //move towards the player
                     direction = (PlayerController.Instance.transform.position - transform.position).normalized;
@@ -38,9 +58,21 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController.Instance.TakeDamage(1);
+            PlayerController.Instance.TakeDamage(damage);
+        }
+    }
+
+    public void takeDamage(float damage)
+    {
+        health -=  damage;
+        DamageNumberController.Instance.CreateNumber(damage, transform.position);
+        pushCounter = pushTime;
+        if (health <= 0)
+        {
             Destroy(gameObject);
             Instantiate(destroyEffect,transform.position, transform.rotation);
+            PlayerController.Instance.GetExperience(experienceToGive);
+            AudioController.Instance.PlayModifiedSound(AudioController.Instance.enemyDeath);
         }
     }
 }

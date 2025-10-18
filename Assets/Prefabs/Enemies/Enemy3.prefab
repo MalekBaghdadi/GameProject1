@@ -160,7 +160,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2025028529
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 3
   m_Sprite: {fileID: 1813272279, guid: cd9e0face991836459a5bf6b60ec7630, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -271,4 +271,8 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7732800408471567897}
   rb: {fileID: 8475466548068048631}
   destroyEffect: {fileID: 4391722574387904558, guid: cc7fe4e305b0b1544bef38bbf659b9bd, type: 3}
-  moveSpeed: 2
+  moveSpeed: 1.1
+  damage: 3
+  health: 20
+  experienceToGive: 3
+  pushTime: 0.3
